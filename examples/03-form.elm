@@ -1,6 +1,8 @@
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
+import Char exposing (isDigit, isLower, isUpper)
+import String exposing (any)
 
 
 main =
@@ -69,7 +71,15 @@ viewValidation model =
   let
     (color, message) =
       if model.password == model.passwordAgain then
-        ("green", "OK")
+         if String.length model.password > 8 then
+            if String.any Char.isUpper model.password &&
+               String.any Char.isLower model.password &&
+               String.any Char.isDigit model.password then
+                  ("green", "OK")
+            else
+                  ("red", "Should contain 1 upper, 1 lower, 1 digit")
+         else
+            ("red", "Password should be longer than 8 chars")
       else
         ("red", "Passwords do not match!")
   in
